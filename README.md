@@ -9,6 +9,11 @@
 1. Download wanted 1kp SOAPdenovoTrans assembly
 2. Convert the assembly into a blast database
 
+### Search
+1. Use blastn to find the gene from annotated genome in the 1kp assembly
+2. Create different versions of search that can be modified from the command
+line
+
 #### Codes
 
 * For 1kp assemblies, use assigned 4-letter code
