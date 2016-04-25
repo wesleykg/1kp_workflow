@@ -1,4 +1,4 @@
 #!/bin/bash
 
 wget --user=1kp-data --password=1kp-rna1 -i wanted_assembly_URLs.txt
-bzip -d *.bz2
+bzip2 -d *.bz2
