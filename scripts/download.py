@@ -19,8 +19,10 @@ with open(wanted_species_file, 'r') as species_file:
     for line in species_file:
         ID = line.split('-')[0]
         URL = prefix + line.rstrip() + infix + ID + suffix
+        print 'Downloading', line.rstrip()
         compressed_assembly = requests.get(URL, 
                                 auth=HTTPDigestAuth('1kp-data', '1kp-rna1'))
+        print 'Decompressing', line.rstrip()
         assembly = bz2.decompress(compressed_assembly.content)
         with open(data_dir + ID + outname_suffix, 'w') as out_assembly:
             out_assembly.write(assembly)
