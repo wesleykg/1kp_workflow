@@ -1,5 +1,13 @@
 # Workflow for 1kp Assemblies
 
+## How to Use
+
+* `make download` will download and decompress assemblies
+* `make all` only works after `make download` has completed
+* 'make all' creates blast databases for each assembly
+
+## Roadmap
+
 ### Prepare Query Sequences
 1. Download annotated genome and convert names to the following form:
  * CODE_geneName
@@ -19,5 +27,5 @@ ___
 #### Codes
 
 * For 1kp assemblies, use assigned 4-letter code
-* For annotated genomes, use first two letters of genus and first two letters of
-species
+* For annotated genomes, use first three letters of genus and first two letters
+of species
