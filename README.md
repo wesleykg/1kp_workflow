@@ -4,7 +4,7 @@
 
 * `make download` will download and decompress assemblies
 * `make all` only works after `make download` has completed
-* 'make all' creates blast databases for each assembly
+* `make all` creates blast databases for each assembly
 
 ## Roadmap
 
