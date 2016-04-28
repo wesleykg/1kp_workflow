@@ -1,18 +1,18 @@
 '''Usage: retrieve.py <wanted_species>'''
 
-#from docopt import docopt # For command-line arguments
+from docopt import docopt # For command-line arguments
 import requests
 from requests.auth import HTTPDigestAuth
 import bz2
 
-#cmdln_args = docopt(__doc__) # Creates a dictionary of command-line arguments
+cmdln_args = docopt(__doc__) # Creates a dictionary of command-line arguments
 
-wanted_species_file = "../data/wanted_species.txt"# cmdln_args.get('<wanted_species>')
+wanted_species_file = cmdln_args.get('<wanted_species>')
 
 prefix = "http://onekp.westgrid.ca/1kp-data/"
 infix = "/assembly/"
 suffix = "-SOAPdenovo-Trans-assembly.fa.bz2"
-outname_suffix = "-SOAPdeno-Trans-assembly.fa"
+outname_suffix = "-SOAPdenovo-Trans-assembly.fa"
 data_dir = '../data/'
 
 with open(wanted_species_file, 'r') as species_file:

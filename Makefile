@@ -1,18 +1,19 @@
-ASSEMBLY_FILES = $(wildcard *-SOAPdenovo-Trans-assembly.fa)
-
-all:
-	@echo 'naw'
+all: $(patsubst data/%-SOAPdenovo-Trans-assembly.fa, data/%-blastdb, $(wildcard data/*-SOAPdenovo-Trans-assembly.fa))
 
 download:
-	python scripts/download.py data/wanted_species.txt
+	cd scripts/;python download.py ../data/wanted_species.txt
 
-clean: 
-	rm -rf data/*-SOAPdeno-Trans-assembly.fa
+clean:
+	rm -rf data/*-blastdb/
 
-%/: data/%-SOAPdenovo-Trans-assembly.fa
-	makeblastdb -in $< -dbtype nucl -parse_seqids -out $@
-	#mkdir -p $@-blastdb/
-	#mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $@-blastdb/
+cleanall: 
+	rm -rf data/*-SOAPdeno-Trans-assembly.fa data/*-blastdb/
 
-.PHONY: all clean
+data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
+	mkdir -p $@
+	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
+	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
+
+.PHONY: all clean download
 .DELETE_ON_ERROR:
+.PRECIOUS: data/%-SOAPdenovo-Trans-assembly.fa
