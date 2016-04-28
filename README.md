@@ -14,11 +14,11 @@
 2. Split each gene into its own file
 
 ### Prepare Local Blast Database
-1. Download wanted 1kp SOAPdenovoTrans assembly
-2. Convert the assembly into a blast database
+1. Download & decompress wanted 1kp SOAPdenovoTrans assembly
+2. Create a blast database using the 1kp assembly
 
 ### Search
-1. Use blastn to find the gene from annotated genome in the 1kp assembly
+1. Use `blastn` to find the gene from annotated genome in the 1kp assembly
 2. Create different versions of search that can be modified from the command
 line
 
