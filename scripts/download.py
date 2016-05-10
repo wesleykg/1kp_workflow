@@ -1,4 +1,4 @@
-'''Usage: retrieve.py <wanted_species>'''
+'''Usage: download.py <wanted_species>'''
 
 from docopt import docopt # For command-line arguments
 import requests
