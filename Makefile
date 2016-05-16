@@ -12,9 +12,8 @@ data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
 data/PHIPA_*.fasta: data/PHIPA-genes.fasta
 	cd data/ ; python ../scripts/fasta_splitter.py $(notdir $^)
 
-data/PHIPA_%.txt: data/PHIPA_%.fasta data/*-blastdb/
-	cd data/ ; blastn -query $^ -db $(word 2,$^) -evalue 0.001 -num_threads 4 \
-	-out $(@F) -outfmt '6 qseqid sseqid pident qlen slen length evalue'
+data/%_*.xml: data/PHIPA_%.fasta
+	cd data/ ; python ..scripts/search.py $(notdir $^) .
 
 cleantemp: 
 	cd data/ ; rm -drf *-genes/
