@@ -1,16 +1,16 @@
-'''Usage: search.py <query_gene> <db_location>'''
+'''Usage: search.py <query_gene>'''
 
 import os
 from glob import glob
 from Bio import SeqIO
 from Bio.Blast import NCBIXML
 from Bio.Blast.Applications import NcbiblastnCommandline
-#from docopt import docopt
+from docopt import docopt
 
-#cmdln_args = docopt(__doc__) #Creates a dictionary of command-line arguments
+cmdln_args = docopt(__doc__) #Creates a dictionary of command-line arguments
 
-query_file = '../data/PHIPA_accD.fasta' #cmdln_args.get('<query_gene>')
-db_list = glob('../data/*-blastdb') #cmdln_args.get('<query_gene>')
+query_file = cmdln_args.get('<query_gene>') # ../data/PHIPA_accD.fasta' 
+db_list = glob(os.getcwd() + '/*-blastdb') # glob('../data/*-blastdb')
 
 query_seq = SeqIO.read(query_file, 'fasta')
 query_len = str(len(query_seq))
