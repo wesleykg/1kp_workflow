@@ -1,10 +1,8 @@
 all: $(patsubst data/%-SOAPdenovo-Trans-assembly.fa, data/%-blastdb,\
 	 $(wildcard data/*-SOAPdenovo-Trans-assembly.fa))
 
-gene_list = $(wildcard data/*_*.fasta)
-
 download:
-	cd data/ ; python ../scripts/download.py wanted_species.txt
+	cd data/ ; python ../scripts/0_download.py wanted_species.txt
 
 data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
 	mkdir -p $@
@@ -12,7 +10,7 @@ data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
 
 data/%_*.xml: data/PHIPA_%.fasta
-	cd data/ ; python ../scripts/search.py $(notdir $^)
+	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 cleantemp: 
 	cd data/ ; rm -drf *-genes/
@@ -23,6 +21,6 @@ clean:
 cleanall: 
 	cd data/ ; rm -drf *-SOAPdenovo-Trans-assembly.fa *-blastdb/ *-genes/
 
-.PHONY: all clean cleantemp cleanall download search
+.PHONY: all clean cleantemp cleanall download
 .DELETE_ON_ERROR:
 .PRECIOUS: data/%-SOAPdenovo-Trans-assembly.fa
