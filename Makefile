@@ -22,12 +22,13 @@ cleantemp:
 	cd data/ ; rm -drf *_*.fasta
 
 clean:
-	cd data/ ; rm -drf *-blastdb/ *_*.fasta *_*.xml blast-results.csv
+	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml blast-results.csv
 
 cleanall:
-	cd data/ ; rm -drf *-SOAPdenovo-Trans-assembly.fa *-blastdb/ *_*.fasta \
-	*_*.xml blast-results.csv
+	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml blast-results.csv \
+	*-SOAPdenovo-Trans-assembly.fa *-SOAPdenovo-Trans-Transrate-stats.tsv
 
 .PHONY: clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
-.PRECIOUS: data/%-SOAPdenovo-Trans-assembly.fa
+.PRECIOUS: data/%-SOAPdenovo-Trans-assembly.fa \
+	data/%-SOAPdenovo-Trans-Transrate-stats.tsv
