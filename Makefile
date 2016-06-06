@@ -8,7 +8,7 @@ download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
 
 split:
-	cd data/ ; python ../scripts/1_fasta-splitter.py $(genome)-genes.fasta
+	cd data/ ; python ../scripts/0_fasta-splitter.py $(genome)-genes.fasta
 
 data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
 	mkdir -p $@
