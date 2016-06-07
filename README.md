@@ -2,10 +2,14 @@
 
 ## How to Use
 
-* `make download` will download and decompress assemblies
-* `make split` will divide your genome into individual genes
-* `make blastdb` creates a blast databases for each assembly
-* 'make search' performs a blast search on all databases using all genes
+* `make download` will download and decompress assemblies and stats files
+* `make split` will divide a specified genome into individual genes
+* `make blastdb` creates a blast database for each assembly
+* 'make search' performs a blast search on all databases using all genes from  
+   a specied genome
+
+Specify a genome by typing genome=CODE (See below for CODE details) 
+after the above commands
 
 ## Roadmap
 
@@ -16,12 +20,13 @@
 
 ### Prepare Local Blast Database
 1. Download & decompress wanted 1kp SOAPdenovoTrans assembly
-2. Create a blast database using the 1kp assembly
+2. Filter out "bad" scaffolds using Transrate stats file
+3. Create a blast database using the filtered 1kp assembly
 
 ### Search
-1. Use `blastn` to find the gene from annotated genome in the 1kp assembly
-2. Create different versions of search that can be modified from the command
-line
+1. Use `blastn` to find a gene in the 1kp assembly from an annotated genome
+2. Create different versions of search that can be modified from the command  
+   line (ex. blastP)
 
 ### Alignment
 1. Collect blastn hits from each database into an alignment for each gene
