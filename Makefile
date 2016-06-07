@@ -10,6 +10,9 @@ download:
 split:
 	cd data/ ; python ../scripts/0_fasta-splitter.py $(genome)-genes.fasta
 
+data/%-filtered.fa: data/%-SOAPdenovo-Trans-assembly.fa data/%-SOAPdenovo-Trans-Transrate-stats.tsv
+	cd data/ ; Rscript ../scripts/1_trs-filter.R $(notdir $^)
+
 data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
 	mkdir -p $@
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*

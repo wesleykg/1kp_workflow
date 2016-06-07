@@ -11,7 +11,7 @@ transcriptome_file <- unlist(cmd_args[1])
 transratestats_file <- unlist(cmd_args[2])
 
 onekp_ID <- substr(transcriptome_file, start = 1, stop = 4)
-clean_transcriptome_out <- paste0(onekp_ID, "-filtered", ".fasta")
+clean_transcriptome_out <- paste0(onekp_ID, "-filtered", ".fa")
 
 ## Read in a single species Transcriptome (T) data
 Tdat <- readDNAStringSet(filepath = transcriptome_file)

@@ -1,4 +1,4 @@
-'''Usage: 1_fasta-splitter.py <fasta_file>'''
+'''Usage: 0_fasta-splitter.py <fasta_file>'''
 
 from Bio import SeqIO  # Reading fasta sequences
 import os  # Manipulating filenames
