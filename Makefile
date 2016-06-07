@@ -13,7 +13,7 @@ split:
 data/%-filtered.fa: data/%-SOAPdenovo-Trans-assembly.fa data/%-SOAPdenovo-Trans-Transrate-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs-filter.R $(notdir $^)
 
-data/%-blastdb: data/%-SOAPdenovo-Trans-assembly.fa
+data/%-blastdb: data/%-filtered.fa
 	mkdir -p $@
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
@@ -22,7 +22,7 @@ data/%_*.xml: data/*_%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 cleantemp:
-	cd data/ ; rm -drf *_*.fasta
+	cd data/ ; rm -drf *.xml blast-results.csv
 
 clean:
 	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml blast-results.csv

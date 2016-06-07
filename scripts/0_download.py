@@ -35,13 +35,13 @@ infix_assembly_url = '/assembly/'
 assembly_suffix = '-SOAPdenovo-Trans-assembly.fa.bz2'
 stats_suffix = '-SOAPdenovo-Trans-Transrate-stats.tsv.gz'
 
-outname_assembly = '-SOAPdenovo-Trans-assembly.fa'
-outname_stats = '-SOAPdenovo-Trans-Transrate-stats.tsv'
+outname_assembly = '-assembly.fa'
+outname_stats = '-stats.tsv'
 
 # Open the list of wanted 1kp names and loop over each line, producing the ID
 # and species name and then pasting them together to create the necessary URLs.
 # Both files are downloaded using Digest-factor authentication. The files are
-# then decompressed and saved using the original filename on the server.
+# then decompressed and saved using a truncated version of the server filename.
 with open(wanted_species_file, 'r') as species_file:
     for line in species_file:
         ID = line.split('-')[0]

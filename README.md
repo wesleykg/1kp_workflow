@@ -3,8 +3,9 @@
 ## How to Use
 
 * `make download` will download and decompress assemblies
-* `make all` only works after `make download` has completed
-* `make all` creates blast databases for each assembly
+* `make split` will divide your genome into individual genes
+* `make blastdb` creates a blast databases for each assembly
+* 'make search' performs a blast search on all databases using all genes
 
 ## Roadmap
 
@@ -21,6 +22,9 @@
 1. Use `blastn` to find the gene from annotated genome in the 1kp assembly
 2. Create different versions of search that can be modified from the command
 line
+
+### Alignment
+1. Collect blastn hits from each database into an alignment for each gene
 
 ___
 
