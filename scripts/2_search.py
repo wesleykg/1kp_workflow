@@ -21,13 +21,14 @@ if in_ipython() is False:
     from docopt import docopt  # Command-line argument handler
     cmdln_args = docopt(__doc__)
     query_file = cmdln_args.get('<query_gene>')
+    db_list = glob(os.getcwd() + '/*-blastdb')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    query_file = '../data/PHIPA-accD.fasta'
+    query_file = '../data/PHIPA_accD.fasta'
+    db_list = glob('../data/*-blastdb')
 
-# There should be at least one blast database in the same folder with the name:
-# 'ID-blastdb/ID'
-db_list = glob(os.getcwd() + '/*-blastdb')
+# There should be at least one blast database in
+# the same folder with the name: 'ID-blastdb/ID'
 
 # Reads in the query sequence for blastn and records the name and length of the
 # gene
@@ -65,9 +66,13 @@ for db in db_list:
         for hsps in record.hsps:
             ali_len = str(hsps.align_length)
             e_val = str(hsps.expect)
+            scaf_start_pos = str(hsps.sbjct_start)
+            scaf_end_pos = str(hsps.sbjct_end)
+            scaf_seq = hsps.sbjct
 
             # Append the results of a single match to 'blast-results.csv'
             with open('blast-results.csv', 'a') as out_results:
                 out_results.write(query_name + ',' + query_len + ',' +
                                   scaf_name + ',' + scaf_len + ',' + ali_len +
-                                  ',' + e_val + '\n')
+                                  ',' + e_val + ',' + scaf_start_pos + ',' +
+                                  scaf_end_pos + ',' + scaf_seq + '\n')
