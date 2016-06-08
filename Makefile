@@ -1,5 +1,5 @@
-blastdb: $(patsubst data/%-SOAPdenovo-Trans-assembly.fa, data/%-blastdb, \
-	$(wildcard data/*-SOAPdenovo-Trans-assembly.fa))
+blastdb: $(patsubst data/%-assembly.fa, data/%-blastdb, \
+	$(wildcard data/*-assembly.fa))
 
 search: $(patsubst data/$(genome)_%.fasta, data/%_*.xml, \
 	$(wildcard data/*_*.fasta))
@@ -10,10 +10,10 @@ download:
 split:
 	cd data/ ; python ../scripts/0_fasta-splitter.py $(genome)-genes.fasta
 
-data/%-filtered.fa: data/%-SOAPdenovo-Trans-assembly.fa data/%-SOAPdenovo-Trans-Transrate-stats.tsv
+data/%-assembly-filtered.fa: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs-filter.R $(notdir $^)
 
-data/%-blastdb: data/%-filtered.fa
+data/%-blastdb: data/%-assembly-filtered.fa
 	mkdir -p $@
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
@@ -29,9 +29,8 @@ clean:
 
 cleanall:
 	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml blast-results.csv \
-	*-SOAPdenovo-Trans-assembly.fa *-SOAPdenovo-Trans-Transrate-stats.tsv
+	*-assembly.fa *-stats.tsv
 
 .PHONY: clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
-.PRECIOUS: data/%-SOAPdenovo-Trans-assembly.fa \
-	data/%-SOAPdenovo-Trans-Transrate-stats.tsv
+.PRECIOUS: data/%-assembly.fa data/%-stats.tsv data/%-assembly-filtered.fa

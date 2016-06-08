@@ -26,7 +26,7 @@ after the above commands
 ### Search
 1. Use `blastn` to find a gene in the 1kp assembly from an annotated genome
 2. Create different versions of search that can be modified from the command  
-   line (ex. blastP)
+   line (ex. blastp, megablast, hmmer3)
 
 ### Alignment
 1. Collect blastn hits from each database into an alignment for each gene
