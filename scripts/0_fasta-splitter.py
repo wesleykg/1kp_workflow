@@ -20,7 +20,7 @@ if in_ipython() is False:
     in_fasta_path = cmdln_args.get('<fasta_file>')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    in_fasta_path = '../data/PHIPA-genes.fasta'
+    in_fasta_path = '../data/PHYPA-genes.fasta'
 
 # Retrieve just the filename, dropping the 'data/' part of the path
 in_fasta = os.path.split(in_fasta_path)[1]
