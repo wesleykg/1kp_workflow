@@ -1,7 +1,7 @@
 blastdb: $(patsubst data/%-assembly.fa, data/%-blastdb, \
 	$(wildcard data/*-assembly.fa))
 
-search: $(patsubst data/$(genome)_%.fasta, data/%_*.xml, \
+search: $(patsubst data/$(genome)_%.fasta, data/$(genome)_%_*.xml, \
 	$(wildcard data/*_*.fasta))
 
 download:
@@ -18,7 +18,7 @@ data/%-blastdb: data/%-assembly-filtered.fa
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
 
-data/%_*.xml: data/*_%.fasta
+data/$(genome)_%_*.xml: data/$(genome)_%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 cleantemp:

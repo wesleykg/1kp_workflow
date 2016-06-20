@@ -24,7 +24,7 @@ if in_ipython() is False:
     db_list = glob(os.getcwd() + '/*-blastdb')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    query_file = '../data/PHIPA_accD.fasta'
+    query_file = '../data/PHYPA_accD.fasta'
     db_list = glob('../data/*-blastdb')
 
 # There should be at least one blast database in
@@ -38,14 +38,14 @@ query_name = query_seq.id
 gene_name = query_name.split('_')[1]
 
 # Loop through each database, and search for matches to the query sequence
-# using blastn. Results for each search are wrriten as an xml file.
+# using blastn. Results for each search are written as an xml file.
 for db in db_list:
     db_name = os.path.split(db)[1]
     db_id = db_name.split('-')[0]
     db_path = db + '/' + db_id
-    xml_name = gene_name + '_' + db_id + '.xml'
+    xml_name = query_name + '_' + db_id + '.xml'
 
-    # Intiialize the blastn module and set the parameters.
+    # Intialize the blastn module and set the parameters.
     blastn_search = NcbiblastnCommandline(query=query_file, evalue=0.001,
                                           db=db_path, num_threads=4,
                                           out=xml_name, outfmt=5)
