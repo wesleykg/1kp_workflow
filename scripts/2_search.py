@@ -30,7 +30,7 @@ if in_ipython() is True:
 # There should be at least one blast database in
 # the same folder with the name: 'ID-blastdb/ID'
 
-# Reads in the query sequence for blastn and records the name and length of the
+# Reads in the query sequence for blastn and record the name and length of the
 # gene
 query_seq = SeqIO.read(query_file, 'fasta')
 query_len = str(len(query_seq))
@@ -47,7 +47,7 @@ for db in db_list:
 
     # Intialize the blastn module and set the parameters.
     blastn_search = NcbiblastnCommandline(query=query_file, evalue=0.001,
-                                          db=db_path, num_threads=4,
+                                          db=db_path, num_threads=2,
                                           out=xml_name, outfmt=5)
     blastn_search()
     print 'Searching for', gene_name, 'in', db_name
@@ -56,23 +56,28 @@ for db in db_list:
     # memory here.
     with open(xml_name, 'r') as xml_results:
         results = NCBIXML.read(xml_results)
+#    if 'no hits found' in results:
+#        # Record results with no significant matches
+#        with open('blast-results.csv', 'a') as out_results:
+#            out_results.write(query_name + ',' + query_len)
+#    else:
+        # Loop throuch each match for a single blastn search and record the
+        # name and length of the matching scaffold, alignment length, e-value,
+        # and the DNA sequence of the matched hit
+        for record in results.alignments:
+            scaf_len = str(record.length)
+            scaf_name = record.accession
+            for hsps in record.hsps:
+                ali_len = str(hsps.align_length)
+                e_val = str(hsps.expect)
+                scaf_start_pos = str(hsps.sbjct_start)
+                scaf_end_pos = str(hsps.sbjct_end)
+                scaf_seq = hsps.sbjct
 
-    # Loop throuch each match for a single blastn search and record the name
-    # and length of the matching scaffold. The expect-value and the length of
-    # the alignment are also recorded
-    for record in results.alignments:
-        scaf_len = str(record.length)
-        scaf_name = record.accession
-        for hsps in record.hsps:
-            ali_len = str(hsps.align_length)
-            e_val = str(hsps.expect)
-            scaf_start_pos = str(hsps.sbjct_start)
-            scaf_end_pos = str(hsps.sbjct_end)
-            scaf_seq = hsps.sbjct
-
-            # Append the results of a single match to 'blast-results.csv'
-            with open('blast-results.csv', 'a') as out_results:
-                out_results.write(query_name + ',' + query_len + ',' +
-                                  scaf_name + ',' + scaf_len + ',' + ali_len +
-                                  ',' + e_val + ',' + scaf_start_pos + ',' +
-                                  scaf_end_pos + ',' + scaf_seq + '\n')
+                # Append the results of a single match to 'blast-results.csv'
+                with open('blast-results.csv', 'a') as out_results:
+                    out_results.write(query_name + ',' + query_len + ',' +
+                                      scaf_name + ',' + scaf_len + ',' +
+                                      ali_len + ',' + e_val + ',' +
+                                      scaf_start_pos + ',' + scaf_end_pos +
+                                      ',' + scaf_seq + '\n')
