@@ -28,6 +28,22 @@ if in_ipython() is True:
     query_file = '../data/PHYPA_accD.fasta'
     db_list = glob('../data/*-blastdb')
 
+
+def blastn(query, evalue, db, out):
+    blastn_search = NcbiblastnCommandline(query=query, evalue=evalue,
+                                          db=db, num_threads=2,
+                                          out=blastn_xml_name, outfmt=5)
+    blastn_search()
+    print 'Searching for', gene_name, 'in', db_name, 'using blastn'
+
+
+def tblastx(query, evalue, db, out):
+    tblastx_search = NcbitblastxCommandline(query=query, evalue=evalue,
+                                            db=db, num_threads=2,
+                                            out=tblastx_xml_name, outfmt=5)
+    tblastx_search()
+    print 'Searching for', gene_name, 'in', db_name, 'using tblastx'
+
 # There should be at least one blast database in
 # the same folder with the name: 'ID-blastdb/ID'
 
@@ -44,50 +60,47 @@ for db in db_list:
     db_name = os.path.split(db)[1]
     db_id = db_name.split('-')[0]
     db_path = db + '/' + db_id
+
     blastn_xml_name = query_name + '_' + db_id + '_blastn' + '.xml'
 
-    # Intialize the blastn module and set the parameters.
-    blastn_search = NcbiblastnCommandline(query=query_file, evalue=0.00001,
-                                          db=db_path, num_threads=2,
-                                          out=blastn_xml_name, outfmt=5)
-    blastn_search()
-    print 'Searching for', gene_name, 'in', db_name, 'using blastn'
+    # Search using blastn, and save results to an xml file
+    blastn(query_file, evalue=1e-10, db=db_path, out=blastn_xml_name)
 
-    # Results from above blastn search are saved in an xml file and read into
-    # memory here.
+    # blastn xml file read into memory here
     with open(blastn_xml_name, 'r') as blastn_xml:
         blastn_results = NCBIXML.read(blastn_xml)
 
-        # Check if there were any hits found
-        if not blastn_results.alignments:  # Checks for no hits
-            tblastx_xml_name = query_name + '_' + db_id + '_tblastx' + '.xml'
-            tblastx_search = NcbitblastxCommandline(query=query_file,
-                                                    evalue=0.00001, db=db_path,
-                                                    num_threads=2,
-                                                    out=tblastx_xml_name,
-                                                    outfmt=5)
-            tblastx_search()
-            print 'Searching for', gene_name, 'in', db_name, 'using tblastx'
+    # Check if there were any hits found using blastn
+    if not blastn_results.alignments:  # Syntax for checking if list is empty
 
-            with open(tblastx_xml_name, 'r') as tblastx_xml:
+        tblastx_xml_name = query_name + '_' + db_id + '_tblastx' + '.xml'
+
+        tblastx(query_file, evalue=1e-20, db=db_path, out=tblastx_xml_name)
+
+        # tblastx xml file read into memory here
+        with open(tblastx_xml_name, 'r') as tblastx_xml:
                 tblastx_results = NCBIXML.read(tblastx_xml)
-                if not tblastx_results:
+
+                # Check if there were any hits found using tblastx
+                if not tblastx_results.alignments:
+
                     with open('blast-results.csv', 'a') as out_results:
                         print 'No hits found for', gene_name, 'in', db_name
                         out_results.write(query_name + ',' + query_len + '\n')
-            for record in tblastx_results.alignments:
-                scaf_len = str(record.length)
-                scaf_name = record.accession
-                for hsps in record.hsps:
-                    ali_len = str(hsps.align_length)
-                    e_val = str(hsps.expect)
+
+                for record in tblastx_results.alignments:
+                    scaf_len = str(record.length)
+                    scaf_name = record.accession
+                    for hsps in record.hsps:
+                        ali_len = str(hsps.align_length)
+                        e_val = str(hsps.expect)
 
                     # Append the results of a single tblastx match to
                     # 'blast-results.csv'
                     with open('blast-results.csv', 'a') as out_results:
                         out_results.write(query_name + ',' + query_len + ',' +
                                           scaf_name + ',' + scaf_len + ',' +
-                                          ali_len + ',' + e_val + ',' + '\n')
+                                          ali_len + ',' + e_val + '\n')
 
         # Loop throuch each match for a single blastn search and record the
         # name and length of the matching scaffold, alignment length, e-value,
