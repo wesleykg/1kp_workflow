@@ -64,7 +64,7 @@ for db in db_list:
     blastn_xml_name = query_name + '_' + db_id + '_blastn' + '.xml'
 
     # Search using blastn, and save results to an xml file
-    blastn(query_file, evalue=1e-10, db=db_path, out=blastn_xml_name)
+    blastn(query_file, evalue=1e-3, db=db_path, out=blastn_xml_name)
 
     # blastn xml file read into memory here
     with open(blastn_xml_name, 'r') as blastn_xml:
@@ -75,7 +75,7 @@ for db in db_list:
 
         tblastx_xml_name = query_name + '_' + db_id + '_tblastx' + '.xml'
 
-        tblastx(query_file, evalue=1e-20, db=db_path, out=tblastx_xml_name)
+        tblastx(query_file, evalue=1e-3, db=db_path, out=tblastx_xml_name)
 
         # tblastx xml file read into memory here
         with open(tblastx_xml_name, 'r') as tblastx_xml:
@@ -88,38 +88,37 @@ for db in db_list:
                         print 'No hits found for', gene_name, 'in', db_name
                         out_results.write(query_name + ',' + query_len + '\n')
 
-                for record in tblastx_results.alignments:
-                    scaf_len = str(record.length)
-                    scaf_name = record.accession
-                    for hsps in record.hsps:
-                        ali_len = str(hsps.align_length)
-                        e_val = str(hsps.expect)
-
-                    # Append the results of a single tblastx match to
-                    # 'blast-results.csv'
-                    with open('blast-results.csv', 'a') as out_results:
-                        out_results.write(query_name + ',' + query_len + ',' +
-                                          scaf_name + ',' + scaf_len + ',' +
-                                          ali_len + ',' + e_val + '\n')
-
-        # Loop throuch each match for a single blastn search and record the
-        # name and length of the matching scaffold, alignment length, e-value,
-        # and the DNA sequence of the matched hit
-        for record in blastn_results.alignments:
+        for record in tblastx_results.alignments:
             scaf_len = str(record.length)
             scaf_name = record.accession
             for hsps in record.hsps:
                 ali_len = str(hsps.align_length)
                 e_val = str(hsps.expect)
-                scaf_start_pos = str(hsps.sbjct_start)
-                scaf_end_pos = str(hsps.sbjct_end)
-                scaf_seq = hsps.sbjct
 
-                # Append the results of a single blastn match to
-                # 'blast-results.csv'
-                with open('blast-results.csv', 'a') as out_results:
-                    out_results.write(query_name + ',' + query_len + ',' +
-                                      scaf_name + ',' + scaf_len + ',' +
-                                      ali_len + ',' + e_val + ',' +
-                                      scaf_start_pos + ',' + scaf_end_pos +
-                                      ',' + scaf_seq + '\n')
+            # Append the results of a single tblastx match to
+            # 'blast-results.csv'
+            with open('blast-results.csv', 'a') as out_results:
+                out_results.write(query_name + ',' + query_len + ',' +
+                                  scaf_name + ',' + scaf_len + ',' +
+                                  ali_len + ',' + e_val + '\n')
+
+    # Loop throuch each match for a single blastn search and record the
+    # name and length of the matching scaffold, alignment length, e-value,
+    # and the DNA sequence of the matched hit
+    for record in blastn_results.alignments:
+        scaf_len = str(record.length)
+        scaf_name = record.accession
+        for hsps in record.hsps:
+            ali_len = str(hsps.align_length)
+            e_val = str(hsps.expect)
+            scaf_start_pos = str(hsps.sbjct_start)
+            scaf_end_pos = str(hsps.sbjct_end)
+            scaf_seq = hsps.sbjct
+
+            # Append the results of a single blastn match to
+            # 'blast-results.csv'
+            with open('blast-results.csv', 'a') as out_results:
+                out_results.write(query_name + ',' + query_len + ',' +
+                                  scaf_name + ',' + scaf_len + ',' +
+                                  ali_len + ',' + e_val + ',' + scaf_seq +
+                                  '\n')
