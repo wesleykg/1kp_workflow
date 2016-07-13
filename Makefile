@@ -8,12 +8,15 @@ download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
 
 split:
-	cd data/ ; python ../scripts/0_fasta_splitter.py $(genome)-genes.fasta
+	cd data/ ; python ../scripts/0_fasta_splitter.py $(genome).fasta
 
-data/%-assembly_cleaned.fa: data/%-assembly.fa data/%-stats.tsv
+catenate:
+	cd data/ ; cat *-assembly_cleaned.fasta > all_assembly_cleaned.fasta
+
+data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
 
-data/%-blastdb: data/%-assembly_cleaned.fa
+data/%-blastdb: data/%-assembly_cleaned.fasta
 	mkdir -p $@
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
@@ -33,4 +36,4 @@ cleanall:
 
 .PHONY: clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
-.PRECIOUS: data/%-assembly.fa data/%-stats.tsv data/%-assembly_cleaned.fa
+.PRECIOUS: data/%-assembly.fa data/%-stats.tsv data/%-assembly_cleaned.fasta
