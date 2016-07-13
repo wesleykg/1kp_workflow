@@ -1,6 +1,7 @@
 "Usage: trs_cleaner.R <transcriptome> <transratestats>" -> doc
 
 ## Load packages
+library(tools)
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(Biostrings))
 
@@ -11,10 +12,17 @@ transcriptome_file <- unlist(cmd_args[1])
 transratestats_file <- unlist(cmd_args[2])
 
 onekp_ID <- substr(transcriptome_file, start = 1, stop = 4)
-clean_transcriptome_out <- paste0(onekp_ID, "-assembly-filtered", ".fa")
+filename <- file_path_sans_ext(transcriptome_file)
+extension <- file_ext(transcriptome_file)
+clean_transcriptome_out <- paste0(filename, "_cleaned", ".fasta")
 
 ## Read in a single species Transcriptome (T) data
-Tdat <- readDNAStringSet(filepath = transcriptome_file)
+if(extension == 'fa'){
+	Tdat <- readDNAStringSet(filepath = transcriptome_file)
+} else if (extension == 'faa'){
+	Tdat <- readAAStringSet(filepath = transcriptome_file)
+}
+
 
 ## Read in Transrate Stats (TRS) data
 TRSdat <- read.delim(file = transratestats_file, stringsAsFactors = FALSE, 

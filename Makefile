@@ -8,12 +8,12 @@ download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
 
 split:
-	cd data/ ; python ../scripts/0_fasta-splitter.py $(genome)-genes.fasta
+	cd data/ ; python ../scripts/0_fasta_splitter.py $(genome)-genes.fasta
 
-data/%-assembly-filtered.fa: data/%-assembly.fa data/%-stats.tsv
-	cd data/ ; Rscript ../scripts/1_trs-filter.R $(notdir $^)
+data/%-assembly_cleaned.fa: data/%-assembly.fa data/%-stats.tsv
+	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
 
-data/%-blastdb: data/%-assembly-filtered.fa
+data/%-blastdb: data/%-assembly_cleaned.fa
 	mkdir -p $@
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
@@ -22,15 +22,15 @@ data/$(genome)_%_*.xml: data/$(genome)_%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 cleantemp:
-	cd data/ ; rm -drf *.xml blast-results.csv
+	cd data/ ; rm -drf *.xml *_blast-results.csv
 
 clean:
-	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml blast-results.csv
+	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml *_blast-results.csv
 
 cleanall:
-	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml blast-results.csv \
-	*-assembly.fa *-stats.tsv
+	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
+	*-assembly.fa *-assembly_cleaned.fa *-stats.tsv
 
 .PHONY: clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
-.PRECIOUS: data/%-assembly.fa data/%-stats.tsv data/%-assembly-filtered.fa
+.PRECIOUS: data/%-assembly.fa data/%-stats.tsv data/%-assembly_cleaned.fa
