@@ -16,7 +16,7 @@ blast_results <- read.csv(file = 'PHYPA_all_blast-results.csv',
 
 wanted_scaffold_names <- blast_results %>% select(scaf)
 
-all_scaffolds_index <- fasta.index(filepath = 'all-assembly_cleaned.fasta')
+all_scaffolds_index <- fasta.index(filepath = 'all_assembly_cleaned.fasta')
 
 wanted_scaffolds <- all_scaffolds_index[wanted_scaffold_names]
 
