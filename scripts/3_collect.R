@@ -10,15 +10,25 @@ suppressPackageStartupMessages(library(Biostrings))
 blast_results_header <- c('query', 'blast-db', 'scaf', 'query_len', 'scaf_len', 
 													'align_len', 'e_val', 'blast_ver', 'seq')
 
-blast_results <- read.csv(file = 'PHYPA_all_blast-results.csv', 
+blast_results <- read.csv(file = 'all_blast_results.csv', 
 													stringsAsFactors = FALSE, 
+													#na.strings = 'None found',
 													col.names = blast_results_header)
 
-wanted_scaffold_names <- blast_results %>% select(scaf)
+wanted_scaffold_names <- blast_results %>% select(scaf) %>% 
+  filter(scaf != 'None found') %>% unlist() %>% unname()
 
-all_scaffolds_index <- fasta.index(filepath = 'all_assembly_cleaned.fasta')
+write(wanted_scaffold_names, file = 'wanted_scaffoldnames.txt')
 
-wanted_scaffolds <- all_scaffolds_index[wanted_scaffold_names]
+names
+
+all_scaffolds_index <- fasta.index(filepath = 'all_assemblies_cleaned.fasta')
+
+wanted_scaffolds <- readDNAStringSet(all_scaffolds_index$desc[wanted_scaffold_names])
+
+wanted_scaffolds <- all_scaffolds_index$desc[wanted_scaffold_names]
+
+myvars <- c("v1", "v2", "v3")
 
 #readDNAStringSet(all_assemblies_index)
 
