@@ -12,6 +12,7 @@ split:
 
 catenate:
 	cd data/ ; cat *-assembly_cleaned.fasta > all_assemblies_cleaned.fasta
+	cd data/ ; cat *_blast-results.csv > all_blast_results.csv
 
 data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
