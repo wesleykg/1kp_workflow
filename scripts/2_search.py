@@ -96,7 +96,8 @@ for db in db_list:
                     with open(query_name + '_blast-results.csv', 'a') as \
                             out_results:
                         print 'No hits found for', gene_name, 'in', db_name
-                        out_results.write(query_name + ',' + db_id + '\n')
+                        out_results.write(query_name + ',' + db_id + ',' +
+                                          'None found' + '\n')
 
         # Loop throuch each tblastx match for a single search and record the
         # name and length of the matching scaffold, alignment length, e-value,
