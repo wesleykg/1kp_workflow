@@ -1,4 +1,4 @@
-"Usage: trs_cleaner.R <transcriptome> <transratestats>" -> doc
+"Usage: 1_trs_cleaner.R <transcriptome> <transratestats>" -> doc
 
 ## Load packages
 library(tools)
@@ -8,7 +8,7 @@ suppressPackageStartupMessages(library(Biostrings))
 cmd_args <- docopt::docopt(doc) # Produce a vector of command line arguments
 
 ## Assign command line arguments to variables
-transcriptome_file <- unlist(cmd_args[1]) 
+transcriptome_file <- unlist(cmd_args[1])
 transratestats_file <- unlist(cmd_args[2])
 
 onekp_ID <- substr(transcriptome_file, start = 1, stop = 4)
@@ -22,7 +22,6 @@ if(extension == 'fa'){
 } else if (extension == 'faa'){
 	Tdat <- readAAStringSet(filepath = transcriptome_file)
 }
-
 
 ## Read in Transrate Stats (TRS) data
 TRSdat <- read.delim(file = transratestats_file, stringsAsFactors = FALSE, 
