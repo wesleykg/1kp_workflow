@@ -1,4 +1,4 @@
-'''Usage 3_collect.py <all_assemblies> <blast_results>'''
+'''Usage 3_collect.py <blast_results> <all_assemblies>'''
 
 # Modules
 import pandas  # Reading in csv blast results
@@ -19,12 +19,12 @@ def in_ipython():
 if in_ipython() is False:
     from docopt import docopt  # Command-line argument handler
     cmdln_args = docopt(__doc__)
-    all_assemblies_filename = cmdln_args.get('<all_assemblies>')
     blast_results_filename = cmdln_args.get('<blast_results>')
+    all_assemblies_filename = cmdln_args.get('<all_assemblies>')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    all_assemblies_filename = '../data/all_assemblies_cleaned.fasta'
     blast_results_filename = '../data/PHYPA_atpI_blast-results.csv'
+    all_assemblies_filename = '../data/all_assemblies_cleaned.fasta'
 
 # Index the concatenated file of all 1kp assemblies of interest
 all_scaffolds = SeqIO.index(all_assemblies_filename, format='fasta')
@@ -62,4 +62,4 @@ for name in missing_scaffold_names:
     missing_seq_record = SeqRecord(Seq(''), id=name, description='')
     wanted_scaffold_seqs.append(missing_seq_record)
 
-SeqIO.write(wanted_scaffold_seqs, 'wanted_scaffold_seqs.fasta', format='fasta')
+SeqIO.write(wanted_scaffold_seqs, '_blast-alignment.fasta', format='fasta')
