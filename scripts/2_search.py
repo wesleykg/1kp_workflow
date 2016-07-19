@@ -54,15 +54,6 @@ query_len = str(len(query_seq))
 query_name = query_seq.id
 gene_name = query_name.split('_')[1]
 
-# Create results file if it doesn't exist and add headers to first row
-# explaining the data
-#if os.path.exists(query_name + '_blast-results.csv') is False:
-#    with open(query_name + '_blast-results.csv', 'w') as results_file:
-#        results_file.write('query' + ',' + 'blast-db' + ',' + 'scaf' + ',' +
-#                           'query_len' + ',' + 'scaf_len' + ',' + 'align_len' +
-#                           ',' + 'e_val' + ',' + 'blast_ver' + ',' + 'seq' +
-#                           '\n')
-
 # Loop through each database, and search for matches to the query sequence
 # using blastn. Results for each search are written to an xml file.
 for db in db_list:

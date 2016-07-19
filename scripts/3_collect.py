@@ -3,7 +3,7 @@
 # Modules
 import pandas  # Reading in csv blast results
 from Bio import SeqIO  # Indexing all scaffolds
-# from Bio.Seq import Seq
+from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord  # Producing empty SeqRecords
 
 
