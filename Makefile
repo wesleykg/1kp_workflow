@@ -4,6 +4,8 @@ blastdb: $(patsubst data/%-assembly.fa, data/%-blastdb, \
 search: $(patsubst data/$(genome)_%.fasta, data/$(genome)_%_*.xml, \
 	$(wildcard data/*_*.fasta))
 
+#align: 
+
 download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
 
@@ -12,7 +14,6 @@ split:
 
 catenate:
 	cd data/ ; cat *-assembly_cleaned.fasta > all_assemblies_cleaned.fasta
-	cd data/ ; cat *_blast-results.csv > all_blast_results.csv
 
 data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
@@ -35,6 +36,6 @@ cleanall:
 	cd data/ ; rm -drf *_*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
 	*-assembly.fa *-assembly_cleaned.fa *-stats.tsv
 
-.PHONY: clean cleantemp cleanall download search split
+.PHONY: align catenate clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
 .PRECIOUS: data/%-assembly.fa data/%-stats.tsv data/%-assembly_cleaned.fasta
