@@ -43,24 +43,23 @@ hit_results = blast_results[blast_results.scaf != 'None found']
 missing_results = blast_results[blast_results.scaf == 'None found']
 
 # Initalize list of wanted scaffolds to write to file
-wanted_scaffolds = []
+wanted_scaffold_seqs = []
 
 # Loop through each scaffold name and search for the accompanying SeqRecord
 # in the index of all scaffolds. Add each matched SeqRecord to the list of
-# wanted scaffolds
+# wanted scaffold sequences
 wanted_scaffold_names = hit_results.scaf
 for name in wanted_scaffold_names:
     name = name.rstrip()
-    wanted_scaffold = all_scaffolds[name]
-    wanted_scaffolds.append(wanted_scaffold)
+    wanted_scaffold_seq = all_scaffolds[name]
+    wanted_scaffold_seqs.append(wanted_scaffold_seq)
 
 # Retrieve 1kp species IDs for blast searches with no scaffolds found. Loop
 # through this list of ID's and create an empty SeqRecord for each ID
 # missing a scaffold
 missing_scaffold_names = missing_results.blast_db
 for name in missing_scaffold_names:
-    missing_seq = Seq('')
-    missing_seq_record = SeqRecord(missing_seq, id=name, description='')
-    wanted_scaffolds.append(missing_seq_record)
+    missing_seq_record = SeqRecord(Seq(''), id=name, description='')
+    wanted_scaffold_seqs.append(missing_seq_record)
 
-SeqIO.write(wanted_scaffolds, 'wanted_scaffolds.fasta', format='fasta')
+SeqIO.write(wanted_scaffold_seqs, 'wanted_scaffold_seqs.fasta', format='fasta')
