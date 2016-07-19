@@ -52,7 +52,7 @@ def tblastx(query, evalue, db, out):
 query_seq = SeqIO.read(query_file, 'fasta')
 query_len = str(len(query_seq))
 query_name = query_seq.id
-gene_name = query_name.split('_')[1]
+gene_name = query_name.split('-')[1]
 
 # Loop through each database, and search for matches to the query sequence
 # using blastn. Results for each search are written to an xml file.
