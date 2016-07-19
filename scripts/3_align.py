@@ -1,6 +1,7 @@
-'''Usage 3_collect.py <blast_results> <all_assemblies>'''
+'''Usage: 3_align.py <blast_results> <all_assemblies>'''
 
 # Modules
+import os  # Manipulating filenames
 import pandas  # Reading in csv blast results
 from Bio import SeqIO  # Indexing all scaffolds
 from Bio.Seq import Seq
@@ -23,8 +24,11 @@ if in_ipython() is False:
     all_assemblies_filename = cmdln_args.get('<all_assemblies>')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    blast_results_filename = '../data/PHYPA_atpI_blast-results.csv'
+    blast_results_filename = '../data/PODLA-accD_blast-results.csv'
     all_assemblies_filename = '../data/all_assemblies_cleaned.fasta'
+
+query_name = os.path.split(blast_results_filename)[1]
+query_name = query_name.split('_')[0]
 
 # Index the concatenated file of all 1kp assemblies of interest
 all_scaffolds = SeqIO.index(all_assemblies_filename, format='fasta')
@@ -54,6 +58,9 @@ for name in wanted_scaffold_names:
     wanted_scaffold_seq = all_scaffolds[name]
     wanted_scaffold_seqs.append(wanted_scaffold_seq)
 
+query_seq = SeqIO.read('../data/' + query_name + '.fasta', format='fasta')
+wanted_scaffold_seqs.append(query_seq)
+
 # Retrieve 1kp species IDs for blast searches with no scaffolds found. Loop
 # through this list of ID's and create an empty SeqRecord for each ID
 # missing a scaffold
@@ -62,4 +69,5 @@ for name in missing_scaffold_names:
     missing_seq_record = SeqRecord(Seq(''), id=name, description='')
     wanted_scaffold_seqs.append(missing_seq_record)
 
-SeqIO.write(wanted_scaffold_seqs, '_blast-alignment.fasta', format='fasta')
+SeqIO.write(wanted_scaffold_seqs, query_name + '_blast-alignment.fasta',
+            format='fasta')
