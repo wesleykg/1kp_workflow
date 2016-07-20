@@ -1,8 +1,8 @@
-blastdb: $(patsubst data/%-assembly_cleaned.fasta, \
+blastdb: $(patsubst data/%-assembly.fasta, \
 	data/%-blastdb, \
-	$(wildcard data/*-assembly_cleaned.fasta))
+	$(wildcard data/*-assembly.fasta))
 
-search: $(patsubst data/%-blastdb, \
+search: $(patsubst data/$(genome)-%.fasta, \
     data/$(genome)-%_blast-results.csv, \
 	$(wildcard data/$(genome)-*.fasta))
 
@@ -27,7 +27,7 @@ data/%-blastdb: data/%-assembly_cleaned.fasta
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
 
-data/$(genome)-%_blast-results.csv: data/%-blastdb
+data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 data/$(genome)-%_blast-alignment.fasta: data/$(genome)-%_blast-results.csv
