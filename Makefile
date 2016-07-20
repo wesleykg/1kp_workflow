@@ -1,14 +1,14 @@
-blastdb: $(patsubst data/%-assembly.fa, \ 
-	data/%-blastdb, \ 
-	$(wildcard data/*-assembly.fa))
+blastdb: $(patsubst data/%-assembly_cleaned.fasta, \
+	data/%-blastdb, \
+	$(wildcard data/*-assembly_cleaned.fasta))
 
-search: $(patsubst data/$(genome)-%.fasta, \
+search: $(patsubst data/%-blastdb, \
     data/$(genome)-%_blast-results.csv, \
-	$(wildcard data/*-*.fasta))
+	$(wildcard data/$(genome)-*.fasta))
 
 align: $(patsubst data/$(genome)-%_blast-results.csv, \
 	data/$(genome)-%_blast-alignment.fasta, \
-	$(wildcard data/*-*_blast-results.csv))
+	$(wildcard data/$(genome)-*_blast-results.csv))
 
 download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
@@ -27,7 +27,7 @@ data/%-blastdb: data/%-assembly_cleaned.fasta
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
 
-data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
+data/$(genome)-%_blast-results.csv: data/%-blastdb
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 data/$(genome)-%_blast-alignment.fasta: data/$(genome)-%_blast-results.csv
