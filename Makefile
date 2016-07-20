@@ -1,7 +1,9 @@
-blastdb: $(patsubst data/%-assembly.fa, data/%-blastdb, \
+blastdb: $(patsubst data/%-assembly.fa, \ 
+	data/%-blastdb, \ 
 	$(wildcard data/*-assembly.fa))
 
-search: $(patsubst data/$(genome)-%.fasta, data/$(genome)-%_blast-results.csv, \
+search: $(patsubst data/$(genome)-%.fasta, \
+    data/$(genome)-%_blast-results.csv, \
 	$(wildcard data/*-*.fasta))
 
 align: $(patsubst data/$(genome)-%_blast-results.csv, \
@@ -29,7 +31,8 @@ data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 data/$(genome)-%_blast-alignment.fasta: data/$(genome)-%_blast-results.csv
-	cd data/ ; python ../scripts/3_align.py $(notdir $^) all_assemblies_cleaned.fasta
+	cd data/ ; \ 
+	python ../scripts/3_align.py $(notdir $^) all_assemblies_cleaned.fasta
 
 cleantemp:
 	cd data/ ; rm -drf *_blast-alignment.fasta
