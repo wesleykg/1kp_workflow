@@ -3,6 +3,7 @@
 # Modules
 import os  # Manipulating filenames
 import pandas  # Reading in csv blast results
+from glob import glob  # Finding assemblies to index
 from Bio import SeqIO  # Indexing all scaffolds
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord  # Producing empty SeqRecords
@@ -21,17 +22,18 @@ if in_ipython() is False:
     from docopt import docopt  # Command-line argument handler
     cmdln_args = docopt(__doc__)
     blast_results_filename = cmdln_args.get('<blast_results>')
-    all_assemblies_filename = cmdln_args.get('<all_assemblies>')
+    assembly_list = glob(os.getcwd() + '/*-assembly_cleaned.fasta')
 # Run interatively in an iPython console
 if in_ipython() is True:
     blast_results_filename = '../data/PODLA-accD_blast-results.csv'
-    all_assemblies_filename = '../data/all_assemblies_cleaned.fasta'
+    assembly_list = glob('../data/*-assembly_cleaned.fasta')
 
 query_name = os.path.split(blast_results_filename)[1]
 query_name = query_name.split('_')[0]
 
 # Index the concatenated file of all 1kp assemblies of interest
-all_scaffolds = SeqIO.index(all_assemblies_filename, format='fasta')
+all_scaffolds = SeqIO.index_db('all_assemblies_index.idx',
+                               filenames=assembly_list, format='fasta')
 
 # Names of each column in the csv blast results file
 table_header = 'query', 'blast_db', 'scaf', 'query_len', 'scaf_len', \
