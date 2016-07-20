@@ -31,8 +31,8 @@ data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 data/$(genome)-%_blast-alignment.fasta: data/$(genome)-%_blast-results.csv
-	cd data/ ; \ 
-	python ../scripts/3_align.py $(notdir $^) all_assemblies_cleaned.fasta
+	cd data/ ; \
+	python ../scripts/3_align.py $(notdir $^)
 
 cleantemp:
 	cd data/ ; rm -drf *_blast-alignment.fasta

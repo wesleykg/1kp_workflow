@@ -1,4 +1,4 @@
-'''Usage: 3_align.py <blast_results> <all_assemblies>'''
+'''Usage: 3_align.py <blast_results>'''
 
 # Modules
 import os  # Manipulating filenames
