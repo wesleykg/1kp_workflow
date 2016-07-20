@@ -1,4 +1,4 @@
-'''Usage: 3_align.py <blast_results>'''
+'''Usage: 3_create.py <blast_results>'''
 
 # Modules
 import os  # Manipulating filenames
@@ -27,6 +27,7 @@ if in_ipython() is False:
 if in_ipython() is True:
     blast_results_filename = '../data/PHYPA-atpH_blast-results.csv'
     assembly_list = glob('../data/*-assembly_cleaned.fasta')
+
 
 query_name = os.path.split(blast_results_filename)[1]
 query_name = query_name.split('_')[0]
@@ -76,5 +77,5 @@ for name in missing_scaffold_names:
     missing_seq_record = SeqRecord(Seq(''), id=name, description='')
     wanted_scaffold_seqs.append(missing_seq_record)
 
-SeqIO.write(wanted_scaffold_seqs, query_name + '_blast-alignment.fasta',
+SeqIO.write(wanted_scaffold_seqs, query_name + '_blast-unaligned.fasta',
             format='fasta')
