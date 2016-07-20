@@ -25,15 +25,20 @@ if in_ipython() is False:
     assembly_list = glob(os.getcwd() + '/*-assembly_cleaned.fasta')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    blast_results_filename = '../data/PODLA-accD_blast-results.csv'
+    blast_results_filename = '../data/PHYPA-atpH_blast-results.csv'
     assembly_list = glob('../data/*-assembly_cleaned.fasta')
 
 query_name = os.path.split(blast_results_filename)[1]
 query_name = query_name.split('_')[0]
 
-# Index the concatenated file of all 1kp assemblies of interest
-all_scaffolds = SeqIO.index_db('all_assemblies_index.idx',
-                               filenames=assembly_list, format='fasta')
+# Check if an index of all scaffolds from all assemblies has been created
+if os.path.exists('all_assemblies_index.idx') is False:
+    # Index all 1kp assemblies of interest
+    all_scaffolds = SeqIO.index_db('all_assemblies_index.idx',
+                                   filenames=assembly_list, format='fasta')
+else:
+    # Read in the already existing index
+    all_scaffolds = SeqIO.index_db('all_assemblies_index.idx')
 
 # Names of each column in the csv blast results file
 table_header = 'query', 'blast_db', 'scaf', 'query_len', 'scaf_len', \
