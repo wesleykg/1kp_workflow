@@ -5,7 +5,7 @@ import os  # Manipulating filenames
 import pandas  # Reading in csv blast results
 from glob import glob  # Finding assemblies to index
 from Bio import SeqIO  # Indexing all scaffolds
-from Bio.Seq import Seq
+from Bio.Seq import Seq  # Producing empty SeqRecords
 from Bio.SeqRecord import SeqRecord  # Producing empty SeqRecords
 
 

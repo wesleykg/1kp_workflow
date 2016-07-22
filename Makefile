@@ -6,9 +6,13 @@ search: $(patsubst data/$(genome)-%.fasta, \
     data/$(genome)-%_blast-results.csv, \
 	$(wildcard data/$(genome)-*.fasta))
 
-align: $(patsubst data/$(genome)-%_blast-results.csv, \
-	data/$(genome)-%_blast-alignment.fasta, \
+create: $(patsubst data/$(genome)-%_blast-results.csv, \
+	data/$(genome)-%_blast-unaligned.fasta, \
 	$(wildcard data/$(genome)-*_blast-results.csv))
+
+align: $(patsubst data/$(genome)-%_blast-unaligned.fasta, \
+	data/$(genome)-%_aligned.fasta, \
+	$(wildcard data/$(genome)-*_blast-unaligned.fasta))
 
 download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
@@ -30,20 +34,23 @@ data/%-blastdb: data/%-assembly_cleaned.fasta
 data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
-data/$(genome)-%_blast-alignment.fasta: data/$(genome)-%_blast-results.csv
-	cd data/ ; \
-	python ../scripts/3_align.py $(notdir $^)
+data/$(genome)-%_blast-unaligned.fasta: data/$(genome)-%_blast-results.csv
+	cd data/ ; python ../scripts/3_create.py $(notdir $^)
+	
+data/$(genome)-%_aligned.fasta: data/$(genome)-%_blast-unaligned.fasta
+	cd data/ ; python ../scripts/4_align.py $(notdir $^)
 
 cleantemp:
-	cd data/ ; rm -drf *_blast-alignment.fasta
+	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta
 
 clean:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \ 
-	*_blast-alignment.fasta
+	*_blast-alignment.fasta *_aligned.fasta
 
 cleanall:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
-	*_blast-alignment.fasta *-assembly.fa *-assembly_cleaned.fa *-stats.tsv
+	*_blast-alignment.fasta *_aligned.fasta *-assembly.fa \
+	*-assembly_cleaned.fa *-stats.tsv
 
 .PHONY: align catenate clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
