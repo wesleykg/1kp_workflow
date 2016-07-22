@@ -3,10 +3,15 @@
 ## How to Use
 
 * `make download` will download and decompress assemblies and stats files
-* `make split` will divide a specified genome into individual genes
+* `make split` will divide a specified genome in fasta format into
+   individual genes
 * `make blastdb` creates a blast database for each assembly
-* `make search` performs a blast search on all databases using all genes from  
-   a specied genome
+* `make search` performs a blast search on all databases using all 
+   genes from a specied genome
+* `make create` creates an alignment for each gene found in each 
+   species
+* `make align` automatically aligns the alignment created by 
+  `make create`
 
 Specify a genome by typing genome=CODE (See below for CODE details) 
 after the above commands
@@ -15,7 +20,7 @@ after the above commands
 
 ### Prepare Query Sequences
 1. Download annotated genome and convert names to the following form:
-   * CODE_geneName
+   * CODE-geneName
 2. Split each gene into its own file
 
 ### Prepare Local Blast Database
@@ -30,12 +35,12 @@ after the above commands
    line (ex. blastp, megablast, hmmer3)
 
 ### Alignment
-1. Collect blastn hits from each database into an alignment for each gene
+1. Collect search hits from each database into an alignment for each gene
 
 ___
 
 #### Codes
 
 * For 1kp assemblies, use assigned 4-letter code
-* For annotated genomes, use first three letters of genus and first two letters
-of species
+* For annotated genomes, use first three letters of genus and first 
+  two letters of species
