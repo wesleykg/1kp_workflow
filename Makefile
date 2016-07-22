@@ -44,13 +44,13 @@ cleantemp:
 	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta
 
 clean:
-	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \ 
-	*_blast-alignment.fasta *_aligned.fasta
+	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
+	*_blast-alignment.fasta *_aligned.fasta all_assemblies_index.idx
 
 cleanall:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
-	*_blast-alignment.fasta *_aligned.fasta *-assembly.fa \
-	*-assembly_cleaned.fa *-stats.tsv
+	*_blast-alignment.fasta *_aligned.fasta all_assemblies_index.idx \
+	*-assembly.fa *-assembly_cleaned.fa *-stats.tsv
 
 .PHONY: align catenate clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
