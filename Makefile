@@ -1,6 +1,6 @@
-blastdb: $(patsubst data/%-assembly.fasta, \
+blastdb: $(patsubst data/%-assembly.fa, \
 	data/%-blastdb, \
-	$(wildcard data/*-assembly.fasta))
+	$(wildcard data/*-assembly.fa))
 
 search: $(patsubst data/$(genome)-%.fasta, \
     data/$(genome)-%_blast-results.csv, \
