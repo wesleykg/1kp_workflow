@@ -25,7 +25,7 @@ if in_ipython() is False:
     assembly_list = glob(os.getcwd() + '/*-assembly_cleaned.fasta')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    blast_results_filename = '../data/PHYPA-atpH_blast-results.csv'
+    blast_results_filename = '../data/PODTO-accD_blast-results.csv'
     assembly_list = glob('../data/*-assembly_cleaned.fasta')
 
 
@@ -50,6 +50,9 @@ blast_results = pandas.read_csv(blast_results_filename, names=table_header)
 
 # Retrieve results for blast searches that found a scaffold
 hit_results = blast_results[blast_results.scaf != 'None found']
+
+for row in blast_results:
+    print blast_results.loc['scaffold-ROWR-2001185-Falcatifolium_taxoides']
 
 # Retrieve results for blast searches that didn't find a scaffold
 missing_results = blast_results[blast_results.scaf == 'None found']

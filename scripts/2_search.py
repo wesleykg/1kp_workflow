@@ -47,8 +47,8 @@ def tblastx(query, evalue, db, out):
 # There should be at least one blast database in
 # the same folder with the name: 'ID-blastdb/ID'
 
-# Reads in the query sequence for blastn and record the name and length of the
-# gene
+# Reads in the query sequence for blastn and records the name and length of
+# the gene
 query_seq = SeqIO.read(query_file, 'fasta')
 query_len = str(len(query_seq))
 query_name = query_seq.id
@@ -91,41 +91,49 @@ for db in db_list:
                                           'None found' + '\n')
 
         # Loop throuch each tblastx match for a single search and record the
-        # name and length of the matching scaffold, alignment length, e-value,
+        # name and length of the matching hit, alignment length, e-value,
         # and the DNA sequence of the matched hit
         for record in tblastx_results.alignments:
-            scaf_len = str(record.length)
-            scaf_name = record.accession
+            hit_len = str(record.length)
+            hit_name = record.accession
             for hsps in record.hsps:
                 ali_len = str(hsps.align_length)
                 e_val = str(hsps.expect)
-                scaf_seq = hsps.sbjct
-
+                hit_start_pos = hsps.sbjct_start
+                hit_end_pos = hsps.sbjct_end
+                if hit_start_pos - hit_end_pos < 0:
+                    orientation = 'sense'
+                elif hit_start_pos - hit_end_pos > 0:
+                    orientation = 'antisense'
             # Append the results of a single tblastx match to
-            # gene_blast-results.csv'
+            # GENOME-gene_blast-results.csv'
             with open(query_name + '_blast-results.csv', 'a') as out_results:
                 out_results.write(query_name + ',' + db_id + ',' +
-                                  scaf_name + ',' + query_len + ',' +
-                                  scaf_len + ',' + ali_len + ',' + e_val +
-                                  ',' + 'tblastx' + ',' + scaf_seq + '\n')
+                                  hit_name + ',' + query_len + ',' +
+                                  hit_len + ',' + ali_len + ',' + e_val +
+                                  ',' + orientation + ',' + 'tblastx' + '\n')
 
     # Loop throuch each match for a single blastn search and record the
-    # name and length of the matching scaffold, alignment length, e-value,
+    # name and length of the matching hit, alignment length, e-value,
     # and the DNA sequence of the matched hit
     for record in blastn_results.alignments:
-        scaf_len = str(record.length)
-        scaf_name = record.accession
+        hit_len = str(record.length)
+        hit_name = record.accession
         for hsps in record.hsps:
             ali_len = str(hsps.align_length)
             e_val = str(hsps.expect)
-#            scaf_start_pos = str(hsps.sbjct_start)
-#            scaf_end_pos = str(hsps.sbjct_end)
-            scaf_seq = hsps.sbjct
+            hit_start_pos = hsps.sbjct_start
+            hit_end_pos = hsps.sbjct_end
+            if hit_start_pos - hit_end_pos < 0:
+                orientation = 'sense'
+            elif hit_start_pos - hit_end_pos > 0:
+                orientation = 'antisense'
 
             # Append the results of a single blastn match to
-            # '_blast-results.csv'
+            # 'GENOME-gene_blast-results.csv'
             with open(query_name + '_blast-results.csv', 'a') as out_results:
                 out_results.write(query_name + ',' + db_id + ',' +
-                                  scaf_name + ',' + query_len + ',' +
-                                  scaf_len + ',' + ali_len + ',' + e_val + ','
-                                  'blastn' + ',' + scaf_seq + '\n')
+                                  hit_name + ',' + query_len + ',' +
+                                  hit_len + ',' + ali_len + ',' + e_val +
+                                  ',' + orientation + ',' + 'blastn' + ',' +
+                                  '\n')
