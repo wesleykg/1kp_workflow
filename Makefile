@@ -43,6 +43,10 @@ data/$(genome)-%_aligned.fasta: data/$(genome)-%_blast-unaligned.fasta
 cleantemp:
 	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta
 
+cleansearch:
+	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta *_*.xml \
+	*_blast-results.csv
+
 clean:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
 	*_blast-alignment.fasta *_aligned.fasta all_assemblies_index.idx
