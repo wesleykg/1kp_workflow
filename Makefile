@@ -41,20 +41,22 @@ data/$(genome)-%_aligned.fasta: data/$(genome)-%_blast-unaligned.fasta
 	cd data/ ; python ../scripts/4_align.py $(notdir $^)
 
 cleantemp:
-	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta
+	cd data/ ; rm -drf *_blast-unaligned.fasta *_blast-missing.txt \
+	*_aligned.fasta
 
 cleansearch:
 	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta *_*.xml \
-	*_blast-results.csv
+	*_blast-results.csv *_blast-missing.txt
 
 clean:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
-	*_blast-alignment.fasta *_aligned.fasta all_assemblies_index.idx
+	*_blast-alignment.fasta *_blast-missing.txt *_aligned.fasta \
+	all_assemblies_index.idx
 
 cleanall:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \
-	*_blast-alignment.fasta *_aligned.fasta all_assemblies_index.idx \
-	*-assembly.fa *-assembly_cleaned.fa *-stats.tsv
+	*_blast-alignment.fasta *_blast-missing.txt *_aligned.fasta \
+	all_assemblies_index.idx *-assembly.fa *-assembly_cleaned.fa *-stats.tsv
 
 .PHONY: align catenate clean cleantemp cleanall download search split
 .DELETE_ON_ERROR:
