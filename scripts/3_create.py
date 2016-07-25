@@ -23,7 +23,7 @@ if in_ipython() is False:
     assembly_list = glob(os.getcwd() + '/*-assembly_cleaned.fasta')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    blast_results_filename = '../data/PODTO-ccsA_blast-results.csv'
+    blast_results_filename = '../data/PODTO-psbM_blast-results.csv'
     assembly_list = glob('../data/*-assembly_cleaned.fasta')
 
 
@@ -53,12 +53,6 @@ antisense_results = blast_results[blast_results.orientation == 'antisense']
 # Initalize list of wanted hits to write to file
 wanted_hits = []
 
-# Add the original query sequence to file
-query_name = os.path.split(blast_results_filename)[1]
-query_name = query_name.split('_')[0]
-query_seq = SeqIO.read('../data/' + query_name + '.fasta', format='fasta')
-wanted_hits.append(query_seq)
-
 # Loop through each scaffold name and search for the accompanying SeqRecord
 # in the index of all scaffolds. Add each matched SeqRecord to the list of
 # wanted scaffold sequences
@@ -67,6 +61,12 @@ for name in wanted_sense_names:
     name = name.rstrip()
     wanted_hit_seq = all_scaffolds[name]
     wanted_hits.append(wanted_hit_seq)
+
+# Add the original query sequence to file
+query_name = os.path.split(blast_results_filename)[1]
+query_name = query_name.split('_')[0]
+query_seq = SeqIO.read('../data/' + query_name + '.fasta', format='fasta')
+wanted_hits.append(query_seq)
 
 wanted_antisense_names = antisense_results.hit
 for name in wanted_antisense_names:
