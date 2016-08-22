@@ -20,9 +20,6 @@ download:
 split:
 	cd data/ ; python ../scripts/0_fasta_splitter.py $(genome).fasta
 
-catenate:
-	cd data/ ; cat *-assembly_cleaned.fasta > all_assemblies_cleaned.fasta
-
 data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
 
