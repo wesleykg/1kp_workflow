@@ -18,7 +18,7 @@ download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
 
 split:
-	cd data/ ; python ../scripts/0_fasta_splitter.py $(genome).fasta
+	cd data/ ; python ../scripts/0_fasta_splitter.py $(genome)_*.fasta
 
 data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
