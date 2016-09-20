@@ -99,19 +99,31 @@ for db in db_list:
             for hsps in record.hsps:
                 ali_len = str(hsps.align_length)
                 e_val = str(hsps.expect)
+                hit_seq = str(hsps.sbjct[0:])
                 hit_start_pos = hsps.sbjct_start
                 hit_end_pos = hsps.sbjct_end
                 if hit_start_pos - hit_end_pos < 0:
                     orientation = 'sense'
                 elif hit_start_pos - hit_end_pos > 0:
                     orientation = 'antisense'
+
+                # Write fasta alignment of the part of the scaffold that aligns
+                # to the query seqeunce, not the whole scaffold
+                with open(query_name + '_alignment.fasta', 'a') as \
+                        out_alignment:
+                            out_alignment.write('>' + hit_name + '\n' +
+                                                hit_seq + '\n')
             # Append the results of a single tblastx match to
             # GENOME-gene_blast-results.csv'
-            with open(query_name + '_blast-results.csv', 'a') as out_results:
-                out_results.write(query_name + ',' + db_id + ',' +
-                                  hit_name + ',' + query_len + ',' +
-                                  hit_len + ',' + ali_len + ',' + e_val +
-                                  ',' + orientation + ',' + 'tblastx' + '\n')
+                with open(query_name + '_blast-results.csv', 'a') as \
+                        out_results:
+                                out_results.write(query_name + ',' + db_id +
+                                                  ',' + hit_name + ',' +
+                                                  query_len + ',' + hit_len +
+                                                  ',' + ali_len + ',' + e_val +
+                                                  ',' + orientation + ',' +
+                                                  'tblastx' + ',' +
+                                                  hit_seq + '\n')
 
     # Loop throuch each match for a single blastn search and record the
     # name and length of the matching hit, alignment length, e-value,
@@ -122,6 +134,7 @@ for db in db_list:
         for hsps in record.hsps:
             ali_len = str(hsps.align_length)
             e_val = str(hsps.expect)
+            hit_seq = str(hsps.sbjct[0:])
             hit_start_pos = hsps.sbjct_start
             hit_end_pos = hsps.sbjct_end
             if hit_start_pos - hit_end_pos < 0:
@@ -129,6 +142,10 @@ for db in db_list:
             elif hit_start_pos - hit_end_pos > 0:
                 orientation = 'antisense'
 
+            # Write fasta alignment of the part of the scaffold that aligns
+            # to the query seqeunce, not the whole scaffold
+            with open(query_name + '_alignment.fasta', 'a') as out_alignment:
+                out_alignment.write('>' + hit_name + '\n' + hit_seq + '\n')
             # Append the results of a single blastn match to
             # 'GENOME-gene_blast-results.csv'
             with open(query_name + '_blast-results.csv', 'a') as out_results:
@@ -136,4 +153,4 @@ for db in db_list:
                                   hit_name + ',' + query_len + ',' +
                                   hit_len + ',' + ali_len + ',' + e_val +
                                   ',' + orientation + ',' + 'blastn' + ',' +
-                                  '\n')
+                                  hit_seq + ',' + '\n')
