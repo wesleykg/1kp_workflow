@@ -123,8 +123,7 @@ for db in db_list:
                                                   query_len + ',' + hit_len +
                                                   ',' + ali_len + ',' + e_val +
                                                   ',' + orientation + ',' +
-                                                  'tblastx' + ',' +
-                                                  hit_seq + '\n')
+                                                  'tblastx' + ',' + '\n')
 
     # Loop throuch each match for a single blastn search and record the
     # name and length of the matching hit, alignment length, e-value,
@@ -155,4 +154,4 @@ for db in db_list:
                                   hit_name + ',' + query_len + ',' +
                                   hit_len + ',' + ali_len + ',' + e_val +
                                   ',' + orientation + ',' + 'blastn' + ',' +
-                                  hit_seq + ',' + '\n')
+                                  ',' + '\n')
