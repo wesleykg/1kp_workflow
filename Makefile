@@ -10,9 +10,9 @@ create: $(patsubst data/$(genome)-%_blast-results.csv, \
 	data/$(genome)-%_blast-unaligned.fasta, \
 	$(wildcard data/$(genome)-*_blast-results.csv))
 
-align: $(patsubst data/$(genome)-%_blast-unaligned.fasta, \
-	data/$(genome)-%_aligned.fasta, \
-	$(wildcard data/$(genome)-*_blast-unaligned.fasta))
+align: $(patsubst data/$(genome)-%_alignment.fasta, \
+	data/$(genome)-%_muscle-aligned.fasta, \
+	$(wildcard data/$(genome)-*_alignment.fasta))
 
 download:
 	cd data/ ; python ../scripts/0_download.py wanted_species.txt
@@ -33,8 +33,8 @@ data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 
 data/$(genome)-%_blast-unaligned.fasta: data/$(genome)-%_blast-results.csv
 	cd data/ ; python ../scripts/3_create.py $(notdir $^)
-	
-data/$(genome)-%_aligned.fasta: data/$(genome)-%_blast-unaligned.fasta
+
+data/$(genome)-%_muscle-aligned.fasta: data/$(genome)-%_alignment.fasta
 	cd data/ ; python ../scripts/4_align.py $(notdir $^)
 
 cleantemp:
@@ -42,8 +42,8 @@ cleantemp:
 	*_aligned.fasta
 
 cleansearch:
-	cd data/ ; rm -drf *_blast-unaligned.fasta *_aligned.fasta *_*.xml \
-	*_blast-results.csv *_blast-missing.txt
+	cd data/ ; rm -drf *_blast-unaligned.fasta *_alignment.fasta \
+	*_muscle-aligned.fasta *_*.xml *_blast-results.csv *_blast-missing.txt
 
 clean:
 	cd data/ ; rm -drf *-*.fasta *-blastdb/ *_*.xml *_blast-results.csv \

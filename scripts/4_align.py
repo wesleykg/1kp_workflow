@@ -26,5 +26,5 @@ alignment_name = os.path.split(unaligned_alignment)[1]
 alignment_name = alignment_name.rpartition('_')[0]
 
 muscle_align = MuscleCommandline(input=unaligned_alignment,
-                                 out=alignment_name + '_aligned.fasta')
+                                 out=alignment_name + '_muscle-aligned.fasta')
 muscle_align()
