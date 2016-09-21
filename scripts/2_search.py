@@ -109,10 +109,11 @@ for db in db_list:
 
                 # Write fasta alignment of the part of the scaffold that aligns
                 # to the query seqeunce, not the whole scaffold
-                with open(query_name + '_alignment.fasta', 'a') as \
-                        out_alignment:
-                            out_alignment.write('>' + hit_name + '\n' +
-                                                hit_seq + '\n')
+#                with open(query_name + '_alignment.fasta', 'a') as \
+#                        out_alignment:
+#                            out_alignment.write('>' + hit_name + '\n' +
+#                                                hit_seq + '\n')
+
             # Append the results of a single tblastx match to
             # GENOME-gene_blast-results.csv'
                 with open(query_name + '_blast-results.csv', 'a') as \
@@ -146,6 +147,7 @@ for db in db_list:
             # to the query seqeunce, not the whole scaffold
             with open(query_name + '_alignment.fasta', 'a') as out_alignment:
                 out_alignment.write('>' + hit_name + '\n' + hit_seq + '\n')
+
             # Append the results of a single blastn match to
             # 'GENOME-gene_blast-results.csv'
             with open(query_name + '_blast-results.csv', 'a') as out_results:
