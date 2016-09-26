@@ -153,5 +153,5 @@ for db in db_list:
                 out_results.write(query_name + ',' + db_id + ',' +
                                   hit_name + ',' + query_len + ',' +
                                   hit_len + ',' + ali_len + ',' + e_val +
-                                  ',' + orientation + ',' + 'blastn' + ',' +
+                                  ',' + orientation + ',' + 'blastn' +
                                   ',' + '\n')
