@@ -24,7 +24,7 @@ if in_ipython() is False:
     assembly_list = glob(os.getcwd() + '/*-assembly_cleaned.fasta')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    blast_results_filename = '../data/NOTAE-accD_blast-results.csv'
+    blast_results_filename = '../data/NOTAE-rpl23_blast-results.csv'
     assembly_list = glob('../data/*-assembly_cleaned.fasta')
 
 
@@ -45,8 +45,14 @@ table_header = 'query', 'blast_db', 'hit', 'query_len', 'hit_len', \
 blast_results = pandas.read_csv(blast_results_filename, names=table_header,
                                 header=None, index_col=False)
 
-# Check if blast search found no hits in any species
-if (blast_results.hit == 'None found').all() is False:
+# Record the name of the query sequence used. Used below.
+query_name = os.path.split(blast_results_filename)[1]
+query_name = query_name.split('_')[0]
+
+# Check if blast search found no hits in any species. False means some hits
+# were found. True means no hits were found, and stops running through indented
+# code and preventing the script from writing a non-existant alignment
+if not (blast_results.hit == 'None found').all():
 
     # Subset results for blast searches that found a sense hit
     sense_results = blast_results[blast_results.orientation == 'sense']
@@ -67,8 +73,6 @@ if (blast_results.hit == 'None found').all() is False:
         wanted_hits.append(wanted_hit_seq)
 
     # Add the original query sequence to file
-    query_name = os.path.split(blast_results_filename)[1]
-    query_name = query_name.split('_')[0]
     query_seq = SeqIO.read('../data/' + query_name + '.fasta', format='fasta')
     wanted_hits.append(query_seq)
 
