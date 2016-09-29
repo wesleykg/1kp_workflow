@@ -5,6 +5,7 @@ import os  # Manipulating filenames
 import pandas  # Reading in csv blast results
 from glob import glob  # Finding assemblies to index
 from Bio import SeqIO  # Indexing all scaffolds
+from Bio.SeqUtils.CheckSum import seguid  # Identifying unique sequences
 
 
 # Check if running interactively in an iPython console, or in a script
@@ -23,7 +24,7 @@ if in_ipython() is False:
     assembly_list = glob(os.getcwd() + '/*-assembly_cleaned.fasta')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    blast_results_filename = '../data/PODTO-psbM_blast-results.csv'
+    blast_results_filename = '../data/NOTAE-rpoC1_blast-results.csv'
     assembly_list = glob('../data/*-assembly_cleaned.fasta')
 
 
@@ -75,6 +76,9 @@ for name in wanted_antisense_names:
     wanted_hit_seq = wanted_hit_seq.reverse_complement(id=True, name=True,
                                                        description=True)
     wanted_hits.append(wanted_hit_seq)
+
+# Remove duplicate sequences
+
 
 SeqIO.write(wanted_hits, query_name + '_blast-unaligned.fasta',
             format='fasta')
