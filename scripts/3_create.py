@@ -77,10 +77,18 @@ for name in wanted_antisense_names:
                                                        description=True)
     wanted_hits.append(wanted_hit_seq)
 
-# Remove duplicate sequences
+# Remove duplicate sequences by creating an ID for each record based on the
+# sequence. All records with unique IDs, and therefore unique sequences, are
+# saved to unique_records. Duplicate sequences should not be added.
+unique_hits = []
+checksum_container = []
+for record in SeqIO.parse(wanted_hits, format='fasta'):
+    checksum = seguid(record.seq)
+    if checksum not in checksum_container:
+        checksum_container.append(checksum)
+        unique_hits.append(record)
 
-
-SeqIO.write(wanted_hits, query_name + '_blast-unaligned.fasta',
+SeqIO.write(unique_hits, query_name + '_blast-unaligned.fasta',
             format='fasta')
 
 # Retrieve 1kp species IDs for blast searches with no hits found. Convert the
