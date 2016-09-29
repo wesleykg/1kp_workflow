@@ -82,7 +82,7 @@ for name in wanted_antisense_names:
 # saved to unique_records. Duplicate sequences should not be added.
 unique_hits = []
 checksum_container = []
-for record in SeqIO.parse(wanted_hits, format='fasta'):
+for record in wanted_hits:
     checksum = seguid(record.seq)
     if checksum not in checksum_container:
         checksum_container.append(checksum)
