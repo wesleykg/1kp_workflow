@@ -6,7 +6,7 @@ search: $(patsubst data/$(genome)-%.fasta, \
     data/$(genome)-%_blast-results.csv, \
 	$(wildcard data/$(genome)-*.fasta))
 
-create: $(patsubst data/$(genome)-%_blast-results.csv, \
+create_alignment: $(patsubst data/$(genome)-%_blast-results.csv, \
 	data/$(genome)-%_blast-unaligned.fasta, \
 	$(wildcard data/$(genome)-*_blast-results.csv))
 
@@ -32,7 +32,7 @@ data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 	cd data/ ; python ../scripts/2_search.py $(notdir $^)
 
 data/$(genome)-%_blast-unaligned.fasta: data/$(genome)-%_blast-results.csv
-	cd data/ ; python ../scripts/3_create.py $(notdir $^)
+	cd data/ ; python ../scripts/3_create_alignment.py $(notdir $^)
 
 data/$(genome)-%_muscle-aligned.fasta: data/$(genome)-%_alignment.fasta
 	cd data/ ; python ../scripts/4_align.py $(notdir $^)

@@ -8,10 +8,10 @@
 * `make blastdb` creates a blast database for each assembly
 * `make search` performs a blast search on all databases using all 
    genes from a specied genome
-* `make create` creates an alignment for each gene found in each 
+* `make create_alignment` creates an alignment for each gene found in each 
    species
 * `make align` automatically aligns the alignment created by 
-  `make create`
+  `make create_alignment`
 
 Specify a genome by typing genome=CODE (See below for CODE details) 
 after the above commands
