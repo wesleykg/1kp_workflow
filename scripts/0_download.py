@@ -30,7 +30,7 @@ if in_ipython() is True:
 # assembly_url is produced as
 # follows: base_assembly_url + ID-Genus_species + infix_assembly_url + ID +
 # assembly_suffix
-base_assembly_url = 'http://onekp.westgrid.ca/1kp-data/'
+base_assembly_url = 'http://206.12.96.204/1kp-data/'
 infix_assembly_url = '/assembly/'
 assembly_suffix = '-SOAPdenovo-Trans-assembly.fa.bz2'
 stats_suffix = '-SOAPdenovo-Trans-Transrate-stats.tsv.gz'
