@@ -47,7 +47,7 @@ Cdat <- Tdat[scaffolds_index]
 number_of_good_scaffolds <- length(Cdat)
 
 ## Record proportion of scaffolds removed to one decimal place
-proportion_of_scaffolds_removed <- round(
+proportion_of_scaffolds_removed <- round(100 - 
                                     number_of_good_scaffolds/number_of_scaffolds 
                                     * 100, digits = 1)
 
