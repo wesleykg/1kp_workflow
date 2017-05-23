@@ -1,4 +1,4 @@
-'''Usage: 2_search.py <query_gene>'''
+'''Usage: 1_search.py <query_gene>'''
 
 # Modules
 import os  # Manipulating filenames
@@ -25,7 +25,7 @@ if in_ipython() is False:
     db_list = glob(os.getcwd() + '/*-blastdb')
 # Run interatively in an iPython console
 if in_ipython() is True:
-    query_file = '../data/PHYPA_accD.fasta'
+    query_file = '../data/Ath-ccmFn1.fasta'
     db_list = glob('../data/*-blastdb')
 
 
@@ -53,6 +53,10 @@ query_seq = SeqIO.read(query_file, 'fasta')
 query_len = str(len(query_seq))
 query_name = query_seq.id
 gene_name = query_name.split('-')[1]
+
+# Add the query seq to an alignment with all positive hits added
+with open(query_name + '_blastn-hsp-alignment.fasta', 'a') as out_alignment:
+    out_alignment.write('>' + gene_name + '\n' + str(query_seq.seq) + '\n')
 
 # Loop through each database, and search for matches to the query sequence
 # using blastn. Results for each search are written to an xml file.
@@ -98,6 +102,8 @@ for db in db_list:
             hit_name = record.accession
             for hsps in record.hsps:
                 ali_len = str(hsps.align_length)
+                query_start_pos = str(hsps.query_start)
+                query_end_pos = str(hsps.query_end)
                 e_val = str(hsps.expect)
                 hit_seq = str(hsps.sbjct[0:])
                 hit_start_pos = hsps.sbjct_start
@@ -109,19 +115,21 @@ for db in db_list:
 
                 # Write fasta alignment of the part of the scaffold that aligns
                 # to the query seqeunce, not the whole scaffold
-#                with open(query_name + '_alignment.fasta', 'a') as \
-#                        out_alignment:
-#                            out_alignment.write('>' + hit_name + '\n' +
-#                                                hit_seq + '\n')
+                with open(query_name + '_tblastx-hsp-alignment.fasta', 'a') \
+                        as out_alignment:
+                            out_alignment.write('>' + hit_name + '\n' +
+                                                hit_seq + '\n')
 
-            # Append the results of a single tblastx match to
-            # GENOME-gene_blast-results.csv'
+                # Append the results of a single tblastx match to
+                # GENOME-gene_blast-results.csv'
                 with open(query_name + '_blast-results.csv', 'a') as \
                         out_results:
                                 out_results.write(query_name + ',' + db_id +
                                                   ',' + hit_name + ',' +
                                                   query_len + ',' + hit_len +
-                                                  ',' + ali_len + ',' + e_val +
+                                                  ',' + ali_len + ',' +
+                                                  query_start_pos + ',' +
+                                                  query_end_pos + ',' + e_val +
                                                   ',' + orientation + ',' +
                                                   'tblastx' + ',' + '\n')
 
@@ -133,6 +141,8 @@ for db in db_list:
         hit_name = record.accession
         for hsps in record.hsps:
             ali_len = str(hsps.align_length)
+            query_start_pos = str(hsps.query_start)
+            query_end_pos = str(hsps.query_end)
             e_val = str(hsps.expect)
             hit_seq = str(hsps.sbjct[0:])
             hit_start_pos = hsps.sbjct_start
@@ -143,15 +153,18 @@ for db in db_list:
                 orientation = 'antisense'
 
             # Write fasta alignment of the part of the scaffold that aligns
-            # to the query seqeunce, not the whole scaffold
-            with open(query_name + '_alignment.fasta', 'a') as out_alignment:
-                out_alignment.write('>' + hit_name + '\n' + hit_seq + '\n')
+            # to the query sequence, not the whole scaffold
+            with open(query_name + '_blastn-hsp-alignment.fasta', 'a') as \
+                    out_alignment:
+                        out_alignment.write('>' + hit_name + '\n' + hit_seq +
+                                            '\n')
 
             # Append the results of a single blastn match to
             # 'GENOME-gene_blast-results.csv'
             with open(query_name + '_blast-results.csv', 'a') as out_results:
                 out_results.write(query_name + ',' + db_id + ',' +
                                   hit_name + ',' + query_len + ',' +
-                                  hit_len + ',' + ali_len + ',' + e_val +
-                                  ',' + orientation + ',' + 'blastn' +
+                                  hit_len + ',' + ali_len + ',' +
+                                  query_start_pos + ',' + query_end_pos + ',' +
+                                  e_val + ',' + orientation + ',' + 'blastn' +
                                   ',' + '\n')
