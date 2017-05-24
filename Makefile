@@ -42,7 +42,7 @@ cleantemp:
 	*_aligned.fasta
 
 cleansearch:
-	cd data/ ; rm -drf *_blast-unaligned.fasta *_alignment.fasta \
+	cd data/ ; rm -drf *_blast-unaligned.fasta *-hsp-alignment.fasta \
 	*_muscle-aligned.fasta *_*.xml *_blast-results.csv *_blast-missing.txt
 
 clean:
