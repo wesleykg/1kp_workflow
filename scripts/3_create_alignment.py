@@ -39,7 +39,9 @@ else:
 
 # Names of each column in the csv blast results file
 table_header = 'query', 'blast_db', 'hit', 'query_len', 'hit_len', \
-                'align_len', 'e_val', 'orientation', 'blast_ver'
+                'align_len', 'query_start_pos', 'query_end_pos', \
+                'hit_start_pos', 'hit_end_pos', 'e_val', 'orientation', \
+                'blast_type'
 
 # Read in the csv blast results file
 blast_results = pandas.read_csv(blast_results_filename, names=table_header,
