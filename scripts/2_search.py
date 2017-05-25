@@ -107,15 +107,21 @@ def retrieve_blast_results(results_file, search_type):
 # There should be at least one blast database in the same folder with the
 # name: 'ID-blastdb/ID'
 
-
-
-
 # Reads in the query sequence for blast and records the name and length of
 # the gene
 query_seq = SeqIO.read(query_file, 'fasta')
 query_len = str(len(query_seq))
 query_name = query_seq.id
 gene_name = query_name.split('-')[1]
+
+# Write header for future blast results file
+with open(query_name + '_blast-results.csv', 'a') as out_results:
+    out_results.write('query' + ',' + 'blast_db' + ',' + 'hit' + ',' +
+                      'query_length' + ',' + 'hit_length' + ',' +
+                      'alignment_length' + ',' + 'query_start_position' + ',' +
+                      'query_end_position' + ',' + 'hit_start_position' +
+                      ',' + 'hit_end_position' + ',' + 'e_value' + ',' +
+                      'orientation' + ',' + 'blast_type' + '\n')
 
 # Add the query seq to HSP alignments with all positive hits added
 with open(query_name + '_blastn-hsp-alignment.fasta', 'a') as out_alignment:
