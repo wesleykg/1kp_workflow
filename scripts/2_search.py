@@ -1,4 +1,4 @@
-'''Usage: 2_search.py <query_gene>'''
+'''Usage: 2_search.py [--evalue=<NUMBER>] <query_gene>'''
 
 # Modules
 import os  # Manipulating filenames
@@ -23,10 +23,12 @@ if in_ipython() is False:
     cmdln_args = docopt(__doc__)
     query_file = cmdln_args.get('<query_gene>')
     db_list = glob(os.getcwd() + '/*-blastdb')
+    evalue = cmdln_args.get('--evalue')
 # Run interactively in an iPython console
 if in_ipython() is True:
     query_file = '../data/NOTAE-rps18.fasta'
     db_list = glob('../data/*-blastdb')
+    evalue = 1e-20
 
 
 def blastn(query, evalue, db, out):
@@ -52,13 +54,14 @@ def retrieve_blast_results(results_file, search_type):
     if not blast_results.alignments:  # Syntax for checking if no results found
         # Run tblastx
         if search_type == 'blastn':
-            aa_query_seq = query_seq.seq.translate()
-            with open(query_name + '_tblastx-hsp-alignment.fasta', 'a') as \
-                    out_alignment:
-                out_alignment.write('>' + gene_name + '\n' +
-                                    str(aa_query_seq) + '\n')
+#            aa_query_seq = query_seq.seq.translate()
+#            with open(query_name + '_tblastx-hsp-alignment.fasta', 'a') as \
+#                    out_alignment:
+#                out_alignment.write('>' + gene_name + '\n' +
+#                                    str(aa_query_seq) + '\n')
             tblastx_xml_name = query_name + '_' + db_id + '_tblastx' + '.xml'
-            tblastx(query_file, evalue=1e-20, db=db_path, out=tblastx_xml_name)
+            tblastx(query_file, evalue=evalue, db=db_path,
+                    out=tblastx_xml_name)
             retrieve_blast_results(tblastx_xml_name, search_type='tblastx')
         elif search_type == 'tblastx':
             with open(query_name + '_blast-results.csv', 'a') as out_results:
@@ -104,6 +107,9 @@ def retrieve_blast_results(results_file, search_type):
 # There should be at least one blast database in the same folder with the
 # name: 'ID-blastdb/ID'
 
+
+
+
 # Reads in the query sequence for blast and records the name and length of
 # the gene
 query_seq = SeqIO.read(query_file, 'fasta')
@@ -125,7 +131,7 @@ for db in db_list:
     blastn_xml_name = query_name + '_' + db_id + '_blastn' + '.xml'
 
     # Search using blastn, and save results to an xml file
-    blastn(query_file, evalue=1e-20, db=db_path, out=blastn_xml_name)
+    blastn(query_file, evalue=evalue, db=db_path, out=blastn_xml_name)
 
     # Retrieve the results of the blast run
     retrieve_blast_results(blastn_xml_name, search_type='blastn')

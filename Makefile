@@ -29,7 +29,7 @@ data/%-blastdb: data/%-assembly_cleaned.fasta
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
 
 data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
-	cd data/ ; python ../scripts/2_search.py $(notdir $^)
+	cd data/ ; python ../scripts/2_search.py --evalue=1e-20 $(notdir $^)
 
 data/$(genome)-%_blast-unaligned.fasta: data/$(genome)-%_blast-results.csv
 	cd data/ ; python ../scripts/3_create_alignment.py $(notdir $^)
