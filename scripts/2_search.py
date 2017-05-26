@@ -119,8 +119,8 @@ with open(query_name + '_blast-results.csv', 'a') as out_results:
     out_results.write('query' + ',' + 'blast_db' + ',' + 'hit' + ',' +
                       'query_length' + ',' + 'hit_length' + ',' +
                       'alignment_length' + ',' + 'query_start_position' + ',' +
-                      'query_end_position' + ',' + 'hit_start_position' +
-                      ',' + 'hit_end_position' + ',' + 'e_value' + ',' +
+                      'query_end_position' + ',' + 'hit_start_position' + ',' +
+                      'hit_end_position' + ',' + 'e_value' + ',' +
                       'orientation' + ',' + 'blast_type' + '\n')
 
 # Add the query seq to HSP alignments with all positive hits added
