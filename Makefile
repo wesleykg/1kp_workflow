@@ -24,8 +24,8 @@ data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 	cd data/ ; Rscript ../scripts/1_trs_cleaner.R $(notdir $^)
 
 data/%-blastdb: data/%-assembly_cleaned.fasta
-	mkdir -p $@
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
+	mkdir -p $@
 	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
 
 data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
