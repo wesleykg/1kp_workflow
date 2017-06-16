@@ -49,7 +49,7 @@ blast_results = pandas.read_csv(blast_results_filename, names=table_header,
 
 # Record the name of the query sequence used. Used below.
 query_name = os.path.split(blast_results_filename)[1]
-query_name = query_name.split('_')[0]
+query_name = query_name.split('_blast-results')[0]
 
 # Check if blast search found no hits in any species. False means some hits
 # were found. True means no hits were found, and stops running through indented
