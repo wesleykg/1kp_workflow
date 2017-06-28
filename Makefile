@@ -26,7 +26,7 @@ data/%-assembly_cleaned.fasta: data/%-assembly.fa data/%-stats.tsv
 data/%-blastdb: data/%-assembly_cleaned.fasta
 	cd data/ ; makeblastdb -in $(^F) -dbtype nucl -parse_seqids -out $*
 	mkdir -p $@
-	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(@F)
+	cd data/ ; mv $*.nhr $*.nin $*.nog $*.nsd $*.nsi $*.nsq $(notdir $@)
 
 data/$(genome)-%_blast-results.csv: data/$(genome)-%.fasta
 	cd data/ ; python ../scripts/2_search.py --evalue=1e-20 $(notdir $^)
