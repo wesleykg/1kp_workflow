@@ -125,7 +125,7 @@ with open(query_name + '_blast-results.csv', 'a') as out_results:
 
 # Add the query seq to HSP alignments with all positive hits added
 with open(query_name + '_blastn-hsp-alignment.fasta', 'a') as out_alignment:
-    out_alignment.write('>' + gene_name + '\n' + str(query_seq.seq) + '\n')
+    out_alignment.write('>' + query_name + '\n' + str(query_seq.seq) + '\n')
 
 # Loop through each database, and search for matches to the query sequence
 # using blastn. Results for each search are written to an xml file.
