@@ -1,5 +1,7 @@
 # Workflow for 1kp Assemblies
 
+## NOT WORKING WITH NEW BLAST DATABASE VERSION 5
+
 ## How to Use
 
 * `make download` will download and decompress assemblies and stats files
